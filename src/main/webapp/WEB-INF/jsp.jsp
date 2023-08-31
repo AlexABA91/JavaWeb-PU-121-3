@@ -1,22 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-    <title>About JSP</title>
-    <title>Title</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-          media="screen,projection"/>
 
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
-<body>
-<jsp:include page="naw.jsp"/>
-<div class="container">
     <h1>Основы JSP</h1>
     <p><b>JSP</b></p> - (Java Server Pages) -технология веб разработки, аналогия ASP или PHP.
     <p>
@@ -77,7 +62,3 @@
         <%}%>
         </tbody>
     </table>
-</div>
-<jsp:include page="footer.jsp"/>
-</body>
-</html>

@@ -4,4 +4,12 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+    <servlet-name>Home</servlet-name>
+    <servlet-class>step.learning.servlets.HomeServlets</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Home</servlet-name>
+    <url-pattern/>
+  </servlet-mapping>
 </web-app>
