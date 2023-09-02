@@ -3,7 +3,27 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
+
   <display-name>Archetype Created Web Application</display-name>
+
+  <filter>
+    <filter-name>FileWriter</filter-name>
+    <filter-class>step.learning.filters.FileWriterFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>FileWriter</filter-name>
+    <url-pattern>*</url-pattern>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>Charset</filter-name>
+    <filter-class>step.learning.filters.CharsetFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>Charset</filter-name>
+    <url-pattern>*</url-pattern>
+  </filter-mapping>
+
   <servlet>
     <servlet-name>Home</servlet-name>
     <servlet-class>step.learning.servlets.HomeServlets</servlet-class>
@@ -12,4 +32,5 @@
     <servlet-name>Home</servlet-name>
     <url-pattern/>
   </servlet-mapping>
+
 </web-app>

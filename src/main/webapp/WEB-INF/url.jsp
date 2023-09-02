@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% String contextPath = request.getContextPath(); // база сайта - домашнее ссылка %>
 <h1>Url</h1>
+
 <pre style="display: block">
              <span style="color:rgb(0, 76, 178)">userinfo</span>       <span style="color:rgb(0, 177, 17)">host</span>      <span style="color:rgb(178, 111, 0)">port</span>
             <span style="color:rgb(0, 76, 178)">┌──┴───┐</span> <span style="color:rgb(0, 177, 17)">┌──────┴──────┐</span> <span style="color:rgb(178, 111, 0)">┌┴┐</span>
@@ -7,6 +9,7 @@
     <span style="color:rgb(178, 111, 0)">└─┬─┘</span>   <span style="color:rgb(176, 0, 177)">└─────────────┬────────────┘</span><span style="color:rgb(0, 76, 178)">└───────┬───────┘</span> <span style="color:rgb(0, 178, 17)">└────────────┬────────────┘</span> <span style="color:rgb(178, 111, 0)">└┬┘</span>
     <span style="color:rgb(178, 111, 0)">scheme</span>              <span style="color:rgb(176, 0, 177)">authority</span>             <span style="color:rgb(0, 76, 178)">path</span>                    <span style="color:rgb(0, 178, 17)">query</span>         <span style="color:rgb(178, 111, 0)">fragment</span>
 </pre>
+<img src="<%=contextPath%>/img/3ae69345e59b4fc48d344c20cc554d60.jpg"  alt="img">
 <p><b>Scheme (схема)</b><br/>
     Каждый URI начинается с имени схемы, которое относится к спецификации для присвоения идентификаторов
     в этой схеме. Также, синтаксис URI — объединенная и расширяемая система именования,

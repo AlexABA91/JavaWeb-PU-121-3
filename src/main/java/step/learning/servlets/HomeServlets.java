@@ -17,6 +17,13 @@ public class HomeServlets extends HttpServlet { // название класса
                 "pageName",                   // ключ - имя атрибута (String)
                 "home"                        // значение атрибута (Object)
         );
+
+      String text =  request.getParameter(                // Параметры - query часть запроса (URL)
+                "text"                       // ...&text = привет, или данные формы у doPost
+        );                                   // значение атрибута (Object)
+
+        request.setAttribute("text",text);
+
         request                              // делаем внутренней redirect - передаем работу к следующему обработчику - index.jsp
                 .getRequestDispatcher(
                 "WEB-INF/_layout.jsp")       // для того чтобы убрать прямой доступ к **.jsp его переносят в специальную папку закрытую
