@@ -1,5 +1,7 @@
 package step.learning.filters;
 
+import com.google.inject.Singleton;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +12,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
+@Singleton
 public class FileWriterFilter implements Filter {
     private final String fileName = "urlLogFile.txt";
     private  FilterConfig _filterConfig;

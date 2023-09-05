@@ -10,15 +10,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8a8005f-cb2e-4c95-8c83-6338434b7899" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/filters/CharsetFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/filters/FileWriterFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/Ioc/FilterConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/Ioc/IocListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/Ioc/LoggerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/Ioc/ServiceConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/Ioc/ServletConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/services/hesh/HashService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/services/hesh/Kupina.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/services/hesh/KupinaHashService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/servlets/HashServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logging.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/hash.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web-old.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/filters/CharsetFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/filters/CharsetFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/filters/FileWriterFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/filters/FileWriterFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/servlets/AboutServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/servlets/AboutServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/servlets/HomeServlets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/servlets/HomeServlets.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/servlets/JspServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/servlets/JspServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/servlets/UrlServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/servlets/UrlServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/_layout.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/_layout.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/home.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/home.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/naw.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/naw.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/url.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/url.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,8 +43,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Jsp File" />
+        <option value="CSS File" />
         <option value="Class" />
+        <option value="Jsp File" />
       </list>
     </option>
   </component>
@@ -57,7 +72,8 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/Repos/WEB/java/java-PU-121-3",
+    "last_opened_file_path": "D:/Repos/WEB/java/JavaWeb-PU-121-3/src/main/webapp/WEB-INF",
+    "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -69,7 +85,11 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Repos\WEB\java\JavaWeb-PU-121-3\src\main\webapp\WEB-INF" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Repos\WEB\java\JavaWeb-PU-121-3\src\main\resources" />
       <recent name="D:\Repos\WEB\java\JavaWeb-PU-121-3\src\main\webapp\WEB-INF" />
       <recent name="D:\Repos\WEB\java\JavaWeb-PU-121-3\src\main\webapp" />
     </key>
@@ -173,7 +193,8 @@
       <option name="presentableId" value="Default" />
       <updated>1693289406350</updated>
       <workItem from="1693289407748" duration="10638000" />
-      <workItem from="1693460841220" duration="33361000" />
+      <workItem from="1693460841220" duration="33751000" />
+      <workItem from="1693893034222" duration="13758000" />
     </task>
     <task id="LOCAL-00001" summary="-- JavaWeb &#10;#FirsCommit">
       <option name="closed" value="true" />
@@ -191,7 +212,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693506561355</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="-- JavaWeb &#10;#Filter&#10;#add Filter URL LOGGER Home Work">
+      <option name="closed" value="true" />
+      <created>1693655963095</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1693655963095</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,7 +229,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="-- JavaWeb &#10;#FirsCommit" />
     <MESSAGE value="-- JavaWeb &#10;#Servlet &#10;#url" />
-    <option name="LAST_COMMIT_MESSAGE" value="-- JavaWeb &#10;#Servlet &#10;#url" />
+    <MESSAGE value="-- JavaWeb &#10;#Filter&#10;#add Filter URL LOGGER Home Work" />
+    <option name="LAST_COMMIT_MESSAGE" value="-- JavaWeb &#10;#Filter&#10;#add Filter URL LOGGER Home Work" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -217,8 +247,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/step/learning/filters/FileWriterFilter.java</url>
-          <line>34</line>
-          <option name="timeStamp" value="6" />
+          <line>37</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/step/learning/services/hesh/Kupina.java</url>
+          <line>2</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

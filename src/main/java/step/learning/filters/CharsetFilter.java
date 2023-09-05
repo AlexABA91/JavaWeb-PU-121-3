@@ -1,5 +1,6 @@
 package step.learning.filters;
 
+import com.google.inject.Singleton;
 import jdk.nashorn.api.scripting.ScriptUtils;
 
 import javax.servlet.*;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipOutputStream;
 
+@Singleton
 public class CharsetFilter implements Filter {
     private FilterConfig _filterConfig;
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -32,8 +34,8 @@ public class CharsetFilter implements Filter {
         // Способ передать данные про работу фильтра - атрибут запроса
            servletRequest.setAttribute("charset", StandardCharsets.UTF_8.name());
 
-        System.out.println(
-           request.getRequestURI());
+        //System.out.println(
+         //  request.getRequestURI());
         //Не забыть передать работу по цепочке
         filterChain.doFilter(servletRequest,servletResponse);
         // код записанный после цепочки будет выполниться на обратном пути

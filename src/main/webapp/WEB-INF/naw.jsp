@@ -14,6 +14,9 @@
             <li<%if( ("url.jsp").equals(request.getParameter("pageName")) ) {%> class="active"<%}%>>
                 <a href="<%=contextPath%>/url">URL</a>
             </li>
+            <li<%if( ("url.jsp").equals(request.getParameter("pageName")) ) {%> class="active"<%}%>>
+                <a href="<%=contextPath%>/hash">Hash Form</a>
+            </li>
         </ul>
     </div>
 </nav>

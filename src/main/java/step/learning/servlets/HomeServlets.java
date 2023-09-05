@@ -1,11 +1,13 @@
 package step.learning.servlets;
 
+import com.google.inject.Singleton;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+@Singleton
 public class HomeServlets extends HttpServlet { // название класса любое
     @Override
     protected void doGet(                    // название метода - именно так вариации не допускаются
