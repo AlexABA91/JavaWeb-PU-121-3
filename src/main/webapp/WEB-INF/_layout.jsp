@@ -27,9 +27,8 @@
     <jsp:param name="pageName" value="<%= pageName %>" />
 </jsp:include>
 <div class="container">
-    <jsp:include page="<%= pageName %>"/>
+    <jsp:include page="<%= pageName  %>"/>
 </div>
-<p>Установлено кодирование <%=request.getAttribute("charset")%></p>
 <jsp:include page="footer.jsp"/>
 </body>
 </html>
