@@ -1,6 +1,8 @@
 package step.learning.servlets;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import step.learning.services.db.DbProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,12 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 @Singleton
 public class HomeServlets extends HttpServlet { // название класса любое
+    @Inject private DbProvider provider;
+
     @Override
     protected void doGet(                    // название метода - именно так вариации не допускаются
             HttpServletRequest request,      // request - объект, который предоставляется веб сервером
             HttpServletResponse response)    // response - то что отправлено как ответ
             throws ServletException, IOException {
 
+        provider.getConnection();
         request.setAttribute(                 // Атрибуты - средство передачи данных во время передачи запроса
                 "pageName",                   // ключ - имя атрибута (String)
                 "home"                        // значение атрибута (Object)

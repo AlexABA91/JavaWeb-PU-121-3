@@ -9,13 +9,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e8a8005f-cb2e-4c95-8c83-6338434b7899" name="Changes" comment="-- Add Config &#10;-- Add homeWork Hash Serves form jsp">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="e8a8005f-cb2e-4c95-8c83-6338434b7899" name="Changes" comment="-- Add Work with form GET POST &#10;-- ADD HomeWork">
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/db/dao/UserDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/db/dto/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/filters/DbFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/services/db/DbProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/services/db/PlanetDbProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/No-db.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/webContexts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webContexts.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/services/hesh/KupinaHashService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/services/hesh/KupinaHashService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/servlets/HashServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/servlets/HashServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/Ioc/FilterConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/Ioc/FilterConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/Ioc/ServiceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/Ioc/ServiceConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/servlets/HomeServlets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/servlets/HomeServlets.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/_layout.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/_layout.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/hash.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/hash.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/naw.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/naw.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,8 +35,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="Class" />
+        <option value="Interface" />
         <option value="Jsp File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -57,7 +67,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Repos/WEB/java/JavaWeb-PU-121-3/src/main/webapp/WEB-INF&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Repos/WEB/java/JavaWeb-PU-121-3&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -67,10 +77,16 @@
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Repos\WEB\java\JavaWeb-PU-121-3" />
       <recent name="D:\Repos\WEB\java\JavaWeb-PU-121-3\src\main\webapp\WEB-INF" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -181,7 +197,10 @@
       <workItem from="1693460841220" duration="33751000" />
       <workItem from="1693893034222" duration="14624000" />
       <workItem from="1694065704767" duration="396000" />
-      <workItem from="1694066124296" duration="11181000" />
+      <workItem from="1694066124296" duration="11900000" />
+      <workItem from="1694152469489" duration="1641000" />
+      <workItem from="1694154128004" duration="8396000" />
+      <workItem from="1694437317371" duration="3444000" />
     </task>
     <task id="LOCAL-00001" summary="-- JavaWeb &#10;#FirsCommit">
       <option name="closed" value="true" />
@@ -215,7 +234,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693921905657</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="-- Add Work with form GET POST &#10;-- ADD HomeWork">
+      <option name="closed" value="true" />
+      <created>1694078040664</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1694078040664</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -226,7 +253,8 @@
     <MESSAGE value="-- JavaWeb &#10;#Servlet &#10;#url" />
     <MESSAGE value="-- JavaWeb &#10;#Filter&#10;#add Filter URL LOGGER Home Work" />
     <MESSAGE value="-- Add Config &#10;-- Add homeWork Hash Serves form jsp" />
-    <option name="LAST_COMMIT_MESSAGE" value="-- Add Config &#10;-- Add homeWork Hash Serves form jsp" />
+    <MESSAGE value="-- Add Work with form GET POST &#10;-- ADD HomeWork" />
+    <option name="LAST_COMMIT_MESSAGE" value="-- Add Work with form GET POST &#10;-- ADD HomeWork" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

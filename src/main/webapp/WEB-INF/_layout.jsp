@@ -23,12 +23,36 @@
 <body>
 
 <jsp:include page="naw.jsp">
-
-    <jsp:param name="pageName" value="<%= pageName %>" />
+ <jsp:param name="pageName" value="<%= pageName %>" />
 </jsp:include>
 <div class="container">
     <jsp:include page="<%= pageName  %>"/>
 </div>
-<jsp:include page="footer.jsp"/>
+<!-- Modal Trigger -->
+
+<!-- Modal Structure -->
+<div id="auth-modal" class="modal">
+    <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>
+    <jsp:include page="footer.jsp"/>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, {
+            opacity:0.5
+        });
+    });
+
+    $(document).ready(function(){
+        $('.modal').modal();
+    });
+</script>
 </body>
+
 </html>
