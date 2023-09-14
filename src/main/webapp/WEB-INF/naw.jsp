@@ -3,7 +3,9 @@
 <% String contextPath = request.getContextPath(); // база сайта - домашнее ссылка %>
 <nav>
     <div class="nav-wrapper light-green darken-2 ">
-        <a href="<%=contextPath%>" class="brand-logo">Logo</a>
+        <a href="<%=contextPath%>" class="brand-logo logo offset-s1">
+            JavaWeb
+        </a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li  <%if (("jsp.jsp").equals(request.getParameter("pageName"))) {%> class="active"<%}%>>
                 <a href="<%=contextPath%>/jsp">JSP</a>
@@ -18,7 +20,7 @@
                 <a href="<%=contextPath%>/hash">Hash Form</a>
             </li>
             <li>
-                <a class="waves-effect waves-light btn modal-trigger" title="Вход" href="#auth-modal">
+                <a class="waves-effect waves-light btn modal-trigger #cddc39 lime " title="Вход" href="#auth-modal">
                     <span class="material-icons">login</span>
                 </a>
             </li>
