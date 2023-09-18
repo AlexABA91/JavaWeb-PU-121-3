@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <% String contextPath = request.getContextPath(); // база сайта - домашнее ссылка %>
+
 <nav>
     <div class="nav-wrapper light-green darken-2 ">
         <a href="<%=contextPath%>" class="brand-logo logo offset-s1">
@@ -25,6 +26,5 @@
                 </a>
             </li>
         </ul>
-
     </div>
 </nav>

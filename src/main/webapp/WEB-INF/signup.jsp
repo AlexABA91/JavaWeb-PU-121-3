@@ -44,10 +44,10 @@
                 <div class="file-field input-field col s6">
                     <div class="btn">
                         <span>File</span>
-                        <input type="file">
+                        <input type="file" id="reg-avatar"  name="reg-avatar">
                     </div>
                     <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" id="reg-avatar"  name="reg-avatar" placeholder="Выберете аватар">
+                        <input class="file-path validate" type="text"  placeholder="Выберете аватар">
                     </div>
                 </div>
             </div>
@@ -150,7 +150,7 @@
         formData.append(birthdayInput.name,birthdayInput.value );
         formData.append(cultureInput. name,cultureInput.value  );
         formData.append(genderInput.  name,genderInput.value   );
-        //formData.append(avatarInput.name,avatarInput.value);
+        formData.append(avatarInput.name,avatarInput.files[0]);
         fetch(window.location.href,{
             method:"POST",
             body:formData

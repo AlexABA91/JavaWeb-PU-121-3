@@ -21,12 +21,12 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="<%= pageName %>/css/style.css">
+    <link rel="stylesheet" href="<%= contextPath %>/css/style.css">
 </head>
 <body>
 
 
-<jsp:include page="naw.jsp">
+<jsp:include page="nav.jsp">
  <jsp:param name="pageName" value="<%= pageName %>" />
 </jsp:include>
 <img src="img/javaWeb.jpg" alt="javaWeb" class="floating left">
@@ -56,6 +56,7 @@
             </form>
         </div>
     </div>
+
     <div class="modal-footer">
         <a href="<%=contextPath%>/signup" class="modal-close waves-effect #4dd0e1 cyan lighten-2 btn-flat">Регистрация</a>
         <a href="#!" class="modal-close waves-effect #ff7043 deep-orange lighten-1 btn-flat">Забыл пароль</a>
@@ -71,9 +72,6 @@
         });
     });
 
-    $(document).ready(function(){
-        $('.modal').modal();
-    });
 </script>
 </body>
 
