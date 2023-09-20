@@ -2,7 +2,7 @@ package step.learning.db.dto;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
+import java.util.Date;
 import java.util.UUID;
 
 public class User {
@@ -19,7 +19,7 @@ public class User {
     private String login;  // unique
     private String salt;
     private String passwordDk;  // Derived Key (RFC 2898)
-    private Date registerDT;
+    private java.util.Date  registerDT;
     private Date lastLoginDT;
     private String culture;  // en-US uk-UA
     private String gender;
@@ -156,7 +156,7 @@ public class User {
         return registerDT;
     }
 
-    public void setRegisterDT(Date registerDT) {
+    public void setRegisterDT(java.util.Date registerDT) {
         this.registerDT = registerDT;
     }
 
@@ -207,6 +207,8 @@ public class User {
     public void setRoleId(UUID roleId) {
         this.roleId = roleId;
     }
+
+
 
     //endregion
 }

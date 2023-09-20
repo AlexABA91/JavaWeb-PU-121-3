@@ -40,27 +40,32 @@
     <div class="modal-content">
         <h4>Аутентификация</h4>
         <div class="row">
-            <form class="col s12">
+            <div class="col s12">
                 <div class="row">
                     <div class="input-field col s10">
                         <i class="material-icons prefix">account_circle</i>
-                        <input id="aut-login" type="text" class="validate">
+                        <input id="aut-login" type="text" name="login" class="validate">
                         <label for="aut-login">Логин</label>
                     </div>
                     <div class="input-field col s10">
                         <i class="material-icons prefix">mode_edit</i>
-                        <input id="aut-password" type="password" class="validate">
+                        <input id="aut-password" type="password" name="password" class="validate">
                         <label for="aut-password">Пароль</label>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
-    <div class="modal-footer">
+    <div class="modal-footer row">
+        <div class="col s4 left-center">
+            <span id="message" ></span>
+        </div>
+        <div class="col s8">
         <a href="<%=contextPath%>/signup" class="modal-close waves-effect #4dd0e1 cyan lighten-2 btn-flat">Регистрация</a>
         <a href="#!" class="modal-close waves-effect #ff7043 deep-orange lighten-1 btn-flat">Забыл пароль</a>
-        <a href="#!" class="modal-close waves-effect #aeea00 lime accent-4 btn-flat">Вход</a>
+        <button class="waves-effect #aeea00 lime accent-4 btn-flat" id="signIn">Вход</button>
+        </div>
     </div>
 </div>
     <jsp:include page="footer.jsp"/>
@@ -68,10 +73,67 @@
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {
-            opacity:0.5
+            opacity:0.5,
+
         });
     });
 
+  document.getElementById("signIn").addEventListener("click",SingIn)
+
+   function SingIn(event) {
+       const loginInput = document.getElementById('aut-login')
+       if (!loginInput) throw "input id= 'aut-login' not find";
+       const passwordInput = document.getElementById('aut-password')
+       if (!passwordInput) throw "input id='aut-password' not find";
+       const message = document.getElementById('message')
+       if (!message) throw "input id='message' not find";
+
+
+       function ShowMessage(isSuccess,messageText ) {
+            if(!isSuccess){
+                message.classList.add("red-text","text-darken-2")
+
+            }else {
+                message.classList.add("green-text","text-darken-2")
+            }
+           message.innerText = messageText
+           setTimeout(function (){
+               if(!isSuccess){
+                   message.classList.add("red-text","text-darken-2")
+
+               }else {
+                   message.classList.add("green-text","text-darken-2")
+               }
+               message.innerText = ""
+           }, 3000)
+       }
+
+       if (loginInput.value.trim().length < 2) {
+           ShowMessage(false, "Введите логин")
+           return;
+       }
+       if (passwordInput.value.trim().length < 2) {
+           ShowMessage(false, 'введите пароль')
+           return;
+       }
+      const data = {
+           login:loginInput.value,
+           password: passwordInput.value
+      }
+       fetch("http://localhost:8080/JavaWeb_PU_121_3/signup",{
+           method:"PUT",
+           body: JSON.stringify(data)
+       }).then(r=> r.json()).then(
+           (r)=>{
+               if(r.statusCode === 401){
+                   ShowMessage(false, "Неправильный логин или пароль")
+               }else {
+                   ShowMessage(true, "Вход успешен")
+               }
+           }
+       )
+
+   }
 </script>
 </body>
 

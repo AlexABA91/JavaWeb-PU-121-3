@@ -8,10 +8,10 @@ import step.learning.services.kdf.KdfService;
 
 import javax.inject.Named;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.sql.Statement;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -82,28 +82,49 @@ public class UserDao {
     public void addUser(User user){
       String sql = "INSERT INTO "+dbPrefix+"Users (id,firstName,lastName,email,emailConfirmCode,phone" +
               ",phoneConfirmCode,birthdate,avatar,`login`,salt" +
-              ",passwordDk,culture,gender,roleId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+              ",passwordDk,culture,gender,roleId,`registerDT`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       try (PreparedStatement prep = dbProvider.getConnection().prepareStatement(sql)){
-          prep.setString(1,UUID.randomUUID().toString());
-          prep.setString(2,user.getFirstName());
-          prep.setString(3,user.getLastName());
-          prep.setString(4, user.getEmail());
-          prep.setString(5, UUID.randomUUID().toString().substring(0,6));
-          prep.setString(6,user.getPhone());
-          prep.setString(7, user.getPhone()!= null? UUID.randomUUID().toString().substring(0,6): null);
-          prep.setDate(8, user.getBirthdate());
-          prep.setString(9,user.getAvatar());
-          prep.setString(10,user.getLogin());
-          prep.setString(11,user.getSalt());
-          prep.setString(12,user.getPasswordDk());
-          prep.setString(13,user.getCulture());
-          prep.setString(14,user.getGender());
-          prep.setString(15,user.getRoleId()!= null? user.getRoleId().toString():null);
-
+          prep.setString(1,  user.getId().toString());
+          prep.setString(2,  user.getFirstName());
+          prep.setString(3,  user.getLastName());
+          prep.setString(4,  user.getEmail());
+          prep.setString(5,  user.getEmailConfirmCode());
+          prep.setString(6,  user.getPhone());
+          prep.setString(7,  user.getPhoneConfirmCode());
+          prep.setDate (8, new java.sql.Date(user.getBirthdate().getTime()));
+          prep.setString(9,  user.getAvatar());
+          prep.setString(10, user.getLogin());
+          prep.setString(11, user.getSalt());
+          prep.setString(12, user.getPasswordDk());
+          prep.setString(13, user.getCulture());
+          prep.setString(14, user.getGender());
+          prep.setString(15, user.getRoleId()!= null? user.getRoleId().toString():null);
+          prep.setTimestamp(16, new java.sql.Timestamp(user.getRegisterDT().getTime()));
          prep.execute();
       } catch (SQLException e) {
           logger.log(Level.SEVERE,e.getMessage()+"--"+sql);
           throw new RuntimeException(e);
       }
+    }
+
+    public User aunthenticate(String login, String password){
+        String sql = "SELECT u.* FROM "+dbPrefix+"Users u WHERE u.`login` = ?";
+        try (PreparedStatement statement = dbProvider.getConnection().prepareStatement(sql)) {
+            statement.setString(1,login);
+            ResultSet res =statement.executeQuery();
+            if(res.next()){ // есть данные
+                User user = new User(res);
+                if(kdfService.
+                        getDerivedKye(password, user.getSalt())
+                        .equals(user.getPasswordDk())){
+                    return user;
+                }
+
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE,e.getMessage()+"--"+sql);
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }

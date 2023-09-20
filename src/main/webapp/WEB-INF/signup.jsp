@@ -143,14 +143,14 @@
             alert('пароль короткое или не введен')
             return;
         }
-        formData.append(passwordInput.name,passwordInput.value );
-        formData.append(nameInput.    name,nameInput.value     );
-        formData.append(lastNameInput.name,lastNameInput.value );
-        formData.append(phoneInput.   name,phoneInput.value    );
-        formData.append(birthdayInput.name,birthdayInput.value );
-        formData.append(cultureInput. name,cultureInput.value  );
-        formData.append(genderInput.  name,genderInput.value   );
-        formData.append(avatarInput.name,avatarInput.files[0]);
+        formData.append(passwordInput.name, passwordInput.value );
+        formData.append(nameInput.name,     nameInput.value     );
+        formData.append(lastNameInput.name, lastNameInput.value );
+        formData.append(phoneInput.name,    phoneInput.value    );
+        formData.append(birthdayInput.name, birthdayInput.value );
+        formData.append(cultureInput.name,  cultureInput.value  );
+        formData.append(genderInput.name,   genderInput.value   );
+        formData.append(avatarInput.name,   avatarInput.files[0]);
         fetch(window.location.href,{
             method:"POST",
             body:formData
