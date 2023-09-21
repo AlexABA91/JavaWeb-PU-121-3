@@ -10,13 +10,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8a8005f-cb2e-4c95-8c83-6338434b7899" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/webContexts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webContexts.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/db/dao/WebTokenDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/step/learning/db/dto/WebToken.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/Ioc/ServiceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/Ioc/ServiceConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/db/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/db/dao/UserDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/db/dto/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/db/dto/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/services/formparse/MixedFormParseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/services/formparse/MixedFormParseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/servlets/InstallServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/servlets/InstallServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/step/learning/servlets/SignupServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/step/learning/servlets/SignupServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/_layout.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/_layout.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/signup.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/signup.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -198,7 +202,8 @@
       <workItem from="1694670442726" duration="13705000" />
       <workItem from="1694757254159" duration="10939000" />
       <workItem from="1695020325014" duration="11660000" />
-      <workItem from="1695102510262" duration="22709000" />
+      <workItem from="1695102510262" duration="23395000" />
+      <workItem from="1695274959045" duration="16487000" />
     </task>
     <task id="LOCAL-00001" summary="-- JavaWeb &#10;#FirsCommit">
       <option name="closed" value="true" />
@@ -272,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695037079345</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="add user registration and file uploader  &#10;add user Authentication">
+      <option name="closed" value="true" />
+      <created>1695206927874</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1695206927874</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -288,7 +301,8 @@
     <MESSAGE value="add userAdd" />
     <MESSAGE value="add SignupServlet&#10;add signup.jsp" />
     <MESSAGE value="add FileSave to upload folder" />
-    <option name="LAST_COMMIT_MESSAGE" value="add FileSave to upload folder" />
+    <MESSAGE value="add user registration and file uploader  &#10;add user Authentication" />
+    <option name="LAST_COMMIT_MESSAGE" value="add user registration and file uploader  &#10;add user Authentication" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -310,7 +324,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/step/learning/servlets/SignupServlet.java</url>
-          <line>174</line>
+          <line>196</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>

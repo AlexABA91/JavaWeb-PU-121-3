@@ -27,7 +27,7 @@
 
 
 <jsp:include page="nav.jsp">
- <jsp:param name="pageName" value="<%= pageName %>" />
+    <jsp:param name="pageName" value="<%= pageName %>"/>
 </jsp:include>
 <img src="img/javaWeb.jpg" alt="javaWeb" class="floating left">
 <div class="container">
@@ -58,83 +58,104 @@
     </div>
 
     <div class="modal-footer row">
-        <div class="col s4 left-center">
-            <span id="message" ></span>
+        <div class="col s6">
+            <span id="message"></span>
+            <ul id="WebToken"></ul>
         </div>
-        <div class="col s8">
-        <a href="<%=contextPath%>/signup" class="modal-close waves-effect #4dd0e1 cyan lighten-2 btn-flat">Регистрация</a>
-        <a href="#!" class="modal-close waves-effect #ff7043 deep-orange lighten-1 btn-flat">Забыл пароль</a>
-        <button class="waves-effect #aeea00 lime accent-4 btn-flat" id="signIn">Вход</button>
+        <div class="col s6">
+            <a href="<%=contextPath%>/signup" class="modal-close waves-effect #4dd0e1 cyan lighten-2 btn-flat">Регистрация</a>
+            <a href="#!" class="modal-close waves-effect #ff7043 deep-orange lighten-1 btn-flat">Забыл пароль</a>
+            <button class="waves-effect #aeea00 lime accent-4 btn-flat" id="signIn">Вход</button>
         </div>
     </div>
 </div>
-    <jsp:include page="footer.jsp"/>
+<jsp:include page="footer.jsp"/>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    const loginInput = document.getElementById('aut-login')
+    if (!loginInput) throw "input id= 'aut-login' not find";
+    const passwordInput = document.getElementById('aut-password')
+    if (!passwordInput) throw "input id='aut-password' not find";
+    const showToken = document.getElementById("WebToken")
+    if (!showToken) throw "input id='showToken' not find";
+
+    document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {
-            opacity:0.5,
-
+            opacity: 0.5,
+            onCloseStart : function (){
+                loginInput.value = "";
+                passwordInput.value ="";
+                showToken.value="";
+            }
         });
+
     });
 
-  document.getElementById("signIn").addEventListener("click",SingIn)
+    document.getElementById("signIn").addEventListener("click", SingIn)
+    function SingIn() {
 
-   function SingIn(event) {
-       const loginInput = document.getElementById('aut-login')
-       if (!loginInput) throw "input id= 'aut-login' not find";
-       const passwordInput = document.getElementById('aut-password')
-       if (!passwordInput) throw "input id='aut-password' not find";
-       const message = document.getElementById('message')
-       if (!message) throw "input id='message' not find";
+        const message = document.getElementById('message')
+        if (!message) throw "input id='message' not find";
 
 
-       function ShowMessage(isSuccess,messageText ) {
-            if(!isSuccess){
-                message.classList.add("red-text","text-darken-2")
+        function ShowMessage(isSuccess, messageText) {
+            if (!isSuccess) {
+                message.classList.add("red-text", "text-darken-2")
 
-            }else {
-                message.classList.add("green-text","text-darken-2")
+            } else {
+                message.classList.add("green-text", "text-darken-2")
             }
-           message.innerText = messageText
-           setTimeout(function (){
-               if(!isSuccess){
-                   message.classList.add("red-text","text-darken-2")
+            message.innerText = messageText
+            setTimeout(function () {
 
-               }else {
-                   message.classList.add("green-text","text-darken-2")
-               }
-               message.innerText = ""
-           }, 3000)
-       }
 
-       if (loginInput.value.trim().length < 2) {
-           ShowMessage(false, "Введите логин")
-           return;
-       }
-       if (passwordInput.value.trim().length < 2) {
-           ShowMessage(false, 'введите пароль')
-           return;
-       }
-      const data = {
-           login:loginInput.value,
-           password: passwordInput.value
-      }
-       fetch("http://localhost:8080/JavaWeb_PU_121_3/signup",{
-           method:"PUT",
-           body: JSON.stringify(data)
-       }).then(r=> r.json()).then(
-           (r)=>{
-               if(r.statusCode === 401){
-                   ShowMessage(false, "Неправильный логин или пароль")
-               }else {
-                   ShowMessage(true, "Вход успешен")
-               }
-           }
-       )
+                if (!isSuccess) {
+                    message.classList.remove("red-text", "text-darken-2")
 
-   }
-</script>
+                } else {
+                    message.classList.remove("green-text", "text-darken-2")
+
+                }
+                message.innerText = ""
+            }, 3000)
+        }
+
+        if (loginInput.value.trim().length < 2) {
+            ShowMessage(false, "Введите логин")
+            return;
+        }
+        if (passwordInput.value.length < 2) {
+            ShowMessage(false, 'введите пароль')
+            return;
+        }
+        const formData = new FormData()
+        formData.append("aut-login", loginInput.value)
+        formData.append("aut-password", passwordInput.value)
+        // const  data = {
+        //       login:loginInput.value,
+        //       password: passwordInput.value
+        //  }
+        fetch("<%= contextPath %>/signup", {
+            method: "PUT",
+            body: formData
+            // JSON.stringify(data)
+        }).then(r => r.json()).then(
+            (r) => {
+                console.log(r)
+                if (r.responseData.statusCode === 200) {
+                    ShowMessage(true, "Вход успешен")
+                    // r.webToken.
+                    showToken.innerHTML += "<li style='color: yellow'>" + "ID: <span style='color: red'>" + r.webToken.id +  "</span></li>"
+                    showToken.innerHTML += "<li style='color: black'>" + "Sub: <span style='color: red'>" + r.webToken.sub + "</span></li>"
+                    showToken.innerHTML += "<li style='color: green'>" + "iat: <span style='color: red'>" + r.webToken.iat + "</span></li>"
+                    showToken.innerHTML += "<li  style='color: violet'>" + "Exp:<span style='color:red'>" + r.webToken.exp +"</span></li>"
+                } else {
+                    ShowMessage(false, "Неправильный логин или пароль")
+                }
+            }
+        )
+    }
+    </script>
 </body>
 
 </html>

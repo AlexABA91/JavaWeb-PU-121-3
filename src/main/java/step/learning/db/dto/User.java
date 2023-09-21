@@ -47,7 +47,8 @@ public class User {
         setRegisterDT( resultSet.getDate( "registerDT" ) ) ;
         setBanDT( resultSet.getDate( "banDT" ) ) ;
         setDeleteDT( resultSet.getDate( "deleteDT" ) ) ;
-        setRoleId( UUID.fromString( resultSet.getString("roleId") ) ) ;
+        String roleId =  resultSet.getString("roleId");
+        setRoleId( roleId == null?null :  UUID.fromString(roleId) ) ;
         setCulture( resultSet.getString( "culture" ) ) ;
         setGender( resultSet.getString( "gender" ) ) ;
     }

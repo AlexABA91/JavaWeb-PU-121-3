@@ -2,14 +2,13 @@ package step.learning.servlets;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import jdk.nashorn.internal.runtime.JSONFunctions;
 import org.apache.commons.fileupload.FileItem;
 import step.learning.db.dao.UserDao;
+import step.learning.db.dao.WebTokenDao;
 import step.learning.db.dto.User;
+import step.learning.db.dto.WebToken;
 import step.learning.services.formparse.FormParsResult;
 import step.learning.services.formparse.FormParsService;
 import step.learning.services.kdf.KdfService;
@@ -19,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -36,13 +34,17 @@ public class SignupServlet extends HttpServlet {
     private final String uploadPath;
     private final UserDao userDao;
     private  final Logger logger;
+    private final WebTokenDao webTokenDao;
     @Inject
-    public SignupServlet(@Named ("UploadDir") String uploadPath, KdfService kdfService, FormParsService formParsService, UserDao userDao, Logger logger) {
+    public SignupServlet(@Named ("UploadDir") String uploadPath, KdfService kdfService,
+                         FormParsService formParsService, UserDao userDao, Logger logger,
+                         WebTokenDao webTokenDao) {
         this.formParsService = formParsService;
         this.uploadPath = uploadPath;
         this.kdfService = kdfService;
         this.userDao = userDao;
         this.logger = logger;
+        this.webTokenDao = webTokenDao;
     }
 
     @Override
@@ -53,15 +55,24 @@ public class SignupServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-         ResponseData responseData;
+        ResponseData responseData;
+        WebToken webToken = null;
          try {
-               JsonObject json = JsonParser.parseReader(req.getReader()).getAsJsonObject();
-
-               Gson gson = new Gson();
-               SignIn signIn = gson.fromJson(json,SignIn.class);
-
-               User user = userDao.aunthenticate(signIn.login,signIn.password);
+             FormParsResult parsResult = formParsService.pars(req);
+             String login = parsResult.getFields().get("aut-login");
+             String password = parsResult.getFields().get("aut-password");
+//              Geson
+//            JsonObject json = JsonParser.parseReader(req.getReader()).getAsJsonObject();
+//            String login = json.get("aut-login").getAsString();
+//             String password = json.get("aut-password").getAsString();
+                User user = userDao.aunthenticate(login,password);
                if(user!= null) {
+                   //Генерируем WbToken
+                    webToken = webTokenDao.create(user);
+//                   Д.З. Перевірити та налаштувати алгоритм формування токенів,
+//                   перевірити правильність дат створення та закінчення токену,
+//                           вивести одержаний токен у повідомленні модального вікна.
+//                   Повторити теорію про window.localStorage
                    responseData = new ResponseData(200, "OK");
                }else {
                    responseData = new ResponseData(401, "Unauthorized");
@@ -69,26 +80,17 @@ public class SignupServlet extends HttpServlet {
 
          }catch (Exception ex){
              logger.log(Level.SEVERE, ex.getMessage());
+
              responseData = new ResponseData(500, "There was an error 500. Look at server`s log");
          }
-        GsonBuilder builder = new GsonBuilder();
-        builder.setPrettyPrinting();
-        Gson gen = builder.create();
+        Gson gen = new GsonBuilder().setPrettyPrinting().create();
 
+        ResponseDataAll rep = new ResponseDataAll(responseData, webToken);
         resp.getWriter().print(
-                gen.toJson(responseData)
+                gen.toJson(rep)
         );
 
-        // Автентификация
-//        Д.З. Реалізувати автентифікацію:
-//        1. У представлені (modal) на кнопку "Вхід" встановити обробник, у
-//        якому надіслати fetch на /signup методом PUT, передати логін, пароль
-//        2. У методі doPut сервлету звернутись до DAO, перевірити успішність
-//        3. сформувати ResponseData з відповідним статусом
-//        а) 401 Unauthorized
-//        б) 200 OK
-//        4. У представлені вивести текстове повідомлення про успішність/відмову
-//        у складі modal (на вільному місці під полями введення даних)
+
     }
 
     @Override
@@ -116,22 +118,42 @@ public class SignupServlet extends HttpServlet {
                 gen.toJson(responseData)
         );
     }
-    static class SignIn{
-       private String login;
-       private String password;
+    static class ResponseDataAll{
+        ResponseData responseData;
+        WebToken webToken;
+
+        public ResponseData getResponseData() {
+            return responseData;
+        }
+
+        public void setResponseData(ResponseData responseData) {
+            this.responseData = responseData;
+        }
+
+        public WebToken getWebToken() {
+            return webToken;
+        }
+
+        public void setWebToken(WebToken webToken) {
+            this.webToken = webToken;
+        }
+
+        public ResponseDataAll(ResponseData responseData, WebToken webToken) {
+            this.responseData = responseData;
+            this.webToken = webToken;
+        }
     }
     static class ResponseData{
         int statusCode;
         String messageStr;
-
         public ResponseData() {
         }
 
         public ResponseData(int statusCode, String messageStr) {
             this.statusCode = statusCode;
             this.messageStr = messageStr;
-        }
 
+        }
         public int getStatusCode() {
             return statusCode;
         }

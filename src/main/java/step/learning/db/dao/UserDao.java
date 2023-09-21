@@ -33,6 +33,7 @@ public class UserDao {
     /**
      * CREATE TABLE and INSERT first user
      * */
+
     public void install(){
 
         String sqlCreateTable = "CREATE TABLE IF NOT EXISTS " + dbPrefix + "Users (" +

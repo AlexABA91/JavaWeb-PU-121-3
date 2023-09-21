@@ -22,7 +22,7 @@ public class ServiceConfig extends AbstractModule {
         bind(FormParsService.class).to(MixedFormParseService.class);
 
         bind(String.class)
-                .annotatedWith(Names.named("DbPrefix"))
+                    .annotatedWith(Names.named("DbPrefix"))
                 .toInstance("JavaWeb_");
         bind(String.class)
                 .annotatedWith(Names.named("UploadDir")).toInstance("JavaWeb_");
