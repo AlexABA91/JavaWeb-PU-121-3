@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.sql.Statement;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -118,6 +119,7 @@ public class UserDao {
                 if(kdfService.
                         getDerivedKye(password, user.getSalt())
                         .equals(user.getPasswordDk())){
+
                     return user;
                 }
 
@@ -127,5 +129,17 @@ public class UserDao {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public void SetLastLoginTime(User user) {
+        String sqlDataUpdate = "UPDATE "+dbPrefix+"Users SET `lastLoginDT` = CURRENT_TIMESTAMP " +
+                "WHERE `id` = '"+user.getId()+"'";
+        try(Statement statement = dbProvider.getConnection().createStatement()) {
+            statement.execute(sqlDataUpdate);
+            user.setLastLoginDT(new Date());
+        }catch (SQLException e) {
+            logger.log(Level.SEVERE,e.getMessage()+"--"+sqlDataUpdate);
+            throw new RuntimeException(e);
+        }
     }
 }

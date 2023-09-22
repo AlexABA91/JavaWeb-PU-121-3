@@ -7,8 +7,11 @@ import com.google.gson.JsonParser;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class WebToken { // https://en.wikipedia.org/wiki/JSON_Web_Token
@@ -16,6 +19,13 @@ public class WebToken { // https://en.wikipedia.org/wiki/JSON_Web_Token
     private UUID sub;  // Subject (User id)
     private Date exp;   // Expiration time
     private Date iat; // Issued at
+    private static final SimpleDateFormat dateParser =
+            new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
+
+// Д.З. Налаштувати розбір дати з рядкового формату "Sep 23, 2023 9:43:09 AM"
+// до формату Date для збереження у токенах
+// https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
+// Перевірити на полях exp та iat
 
     public WebToken(ResultSet resultSet) throws SQLException {
         setId(UUID.fromString(resultSet.getString("id")));
@@ -30,16 +40,17 @@ public class WebToken { // https://en.wikipedia.org/wiki/JSON_Web_Token
         );
     }
     public WebToken() {}
-    public WebToken(String base64String) {
+    public WebToken(String base64String) throws ParseException {
        JsonObject obj = JsonParser.parseString(
                new String( Base64.getDecoder().decode(base64String),
                    StandardCharsets.UTF_8
                )
         ).getAsJsonObject();
+
         setId(UUID.fromString(obj.get("id").getAsString()));
         setSub(UUID.fromString(obj.get("sub").getAsString()));
-        //setExp(resultSet.getDate("exp"));
-       // setIat(resultSet.getDate("iat"));
+        setIat(dateParser.parse( obj.get("iat").getAsString()));
+        setExp(dateParser.parse(obj.get("exp").getAsString()));
     }
     public UUID getId() {
         return id;

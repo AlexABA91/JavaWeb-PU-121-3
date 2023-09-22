@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <div class="modal-footer row">
+    <div  class="modal-footer row">
         <div class="col s6">
             <span id="message"></span>
             <ul id="WebToken"></ul>
@@ -88,15 +88,35 @@
                 showToken.value="";
             }
         });
-
+        window.addEventListener("hashchange",frontRouter)
+        frontRouter()
     });
+    function frontRouter(){
+        console.log(location.hash)
+        switch (location.hash) {
+            case '#front':
+                    loadFrontPage()
+                break;
+            default:
+        }
+    }
 
     document.getElementById("signIn").addEventListener("click", SingIn)
+
+    function loadFrontPage(){
+        const token = window.localStorage.getItem("webToken")
+        const headers = (token == null )?{}:{ 'Authorization':`Bearer ${token}`}
+        fetch("<%= contextPath %>/front",{
+            method:"GET",
+            headers: headers
+        }).then(r=>r.text()).then(t=>console.log(t))
+    }
+
     function SingIn() {
 
         const message = document.getElementById('message')
         if (!message) throw "input id='message' not find";
-
+        const instance = M.Modal.getInstance(document.getElementById("auth-modal"));
 
         function ShowMessage(isSuccess, messageText) {
             if (!isSuccess) {
@@ -107,14 +127,12 @@
             }
             message.innerText = messageText
             setTimeout(function () {
-
-
                 if (!isSuccess) {
                     message.classList.remove("red-text", "text-darken-2")
 
                 } else {
                     message.classList.remove("green-text", "text-darken-2")
-
+                    instance.close();
                 }
                 message.innerText = ""
             }, 3000)
@@ -141,17 +159,24 @@
             // JSON.stringify(data)
         }).then(r => r.json()).then(
             (r) => {
-                console.log(r)
-                if (r.responseData.statusCode === 200) {
-                    ShowMessage(true, "Вход успешен")
-                    // r.webToken.
-                    showToken.innerHTML += "<li style='color: yellow'>" + "ID: <span style='color: red'>" + r.webToken.id +  "</span></li>"
-                    showToken.innerHTML += "<li style='color: black'>" + "Sub: <span style='color: red'>" + r.webToken.sub + "</span></li>"
-                    showToken.innerHTML += "<li style='color: green'>" + "iat: <span style='color: red'>" + r.webToken.iat + "</span></li>"
-                    showToken.innerHTML += "<li  style='color: violet'>" + "Exp:<span style='color:red'>" + r.webToken.exp +"</span></li>"
-                } else {
+                console.log(r.responseData)
+                if(r.responseData.statusCode === 200){
+                    window.localStorage.setItem("webToken", r.base64 );
+                    ShowMessage(true, "Вход выполнен успешно")
+                }else{
                     ShowMessage(false, "Неправильный логин или пароль")
                 }
+                // if (r.responseData.statusCode === 200) {
+                //     ShowMessage(true, "Вход успешен")
+                //     // r.webToken.
+                //     showToken.innerHTML += "<li style='color: yellow'>" + "ID: <span style='color: red'>" + r.webToken.id +  "</span></li>"
+                //     showToken.innerHTML += "<li style='color: black'>" + "Sub: <span style='color: red'>" + r.webToken.sub + "</span></li>"
+                //     showToken.innerHTML += "<li style='color: green'>" + "iat: <span style='color: red'>" + r.webToken.iat + "</span></li>"
+                //     showToken.innerHTML += "<li  style='color: violet'>" + "Exp:<span style='color:red'>" + r.webToken.exp +"</span></li>"
+                //     showToken.innerHTML += "<li  style='color: violet'>" + "Exp:<span style='color:red'>" + r.base64 +"</span></li>"
+                // } else {
+                //     ShowMessage(false, "Неправильный логин или пароль")
+                // }
             }
         )
     }

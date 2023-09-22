@@ -3,11 +3,15 @@
 <% String contextPath = request.getContextPath(); // база сайта - домашнее ссылка %>
 
 <nav>
+
     <div class="nav-wrapper light-green darken-2 ">
+
         <a href="<%=contextPath%>" class="brand-logo logo offset-s1">
             JavaWeb
         </a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="#front">Front</a></li>
+
             <li  <%if (("jsp.jsp").equals(request.getParameter("pageName"))) {%> class="active"<%}%>>
                 <a href="<%=contextPath%>/jsp">JSP</a>
             </li>

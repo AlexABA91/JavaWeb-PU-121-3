@@ -67,11 +67,12 @@ public class SignupServlet extends HttpServlet {
 //             String password = json.get("aut-password").getAsString();
                 User user = userDao.aunthenticate(login,password);
                if(user!= null) {
+                   userDao.SetLastLoginTime(user);
                    //Генерируем WbToken
                     webToken = webTokenDao.create(user);
 //                   Д.З. Перевірити та налаштувати алгоритм формування токенів,
 //                   перевірити правильність дат створення та закінчення токену,
-//                           вивести одержаний токен у повідомленні модального вікна.
+//                   вивести одержаний токен у повідомленні модального вікна.
 //                   Повторити теорію про window.localStorage
                    responseData = new ResponseData(200, "OK");
                }else {
@@ -85,7 +86,7 @@ public class SignupServlet extends HttpServlet {
          }
         Gson gen = new GsonBuilder().setPrettyPrinting().create();
 
-        ResponseDataAll rep = new ResponseDataAll(responseData, webToken);
+        ResponseDataAll rep = new ResponseDataAll(responseData,webToken,webToken.toBase64());
         resp.getWriter().print(
                 gen.toJson(rep)
         );
@@ -122,6 +123,16 @@ public class SignupServlet extends HttpServlet {
         ResponseData responseData;
         WebToken webToken;
 
+        public String getBase64() {
+            return base64;
+        }
+
+        public void setBase64(String base64) {
+            this.base64 = base64;
+        }
+
+        String base64;
+
         public ResponseData getResponseData() {
             return responseData;
         }
@@ -138,7 +149,8 @@ public class SignupServlet extends HttpServlet {
             this.webToken = webToken;
         }
 
-        public ResponseDataAll(ResponseData responseData, WebToken webToken) {
+        public ResponseDataAll(ResponseData responseData, WebToken webToken,String base64 ) {
+            this.base64 = base64;
             this.responseData = responseData;
             this.webToken = webToken;
         }
