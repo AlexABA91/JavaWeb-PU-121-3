@@ -105,11 +105,42 @@
 
     function loadFrontPage(){
         const token = window.localStorage.getItem("webToken")
+        //Проверяем есть ли токен в localStorage
+
         const headers = (token == null )?{}:{ 'Authorization':`Bearer ${token}`}
+        if(! token){  // не авторизованный режим
+            alert('Данная страница требует авторизации')
+            window.location.href = "<%= contextPath%>"
+            return;
+        }
+        // Пытаемся декодировать токен и пытаемся вычислить термин пригодности
+        try{
+            var data = JSON.parse(atob(token))
+
+        }catch (ex){
+            alert('Токен не корректный повторите авторизацию')
+            window.location.href = "<%= contextPath%>"
+            return;
+        }
+        console.log( Date.parse(data.exp))
+        console.log(Date.now())
+        if(Date.parse(data.exp) < Date.now() ){
+            alert("Токен просроченный повторите авторизацию")
+            window.localStorage.removeItem("webToken")
+        }
+
+
         fetch("<%= contextPath %>/front",{
             method:"GET",
             headers: headers
-        }).then(r=>r.text()).then(t=>console.log(t))
+        }).then(j=>j.json()).then(j=>{
+          if(typeof j.login != "undefined"){
+              const userAvatar = document.getElementById("avatar-user")
+              if(!userAvatar) throw  "avatar-user mot found"
+              userAvatar.innerHTML = `<img style="max-height:60px" src="<%= contextPath%>/upload/${j.avatar}" />`
+          }
+            console.log(j)
+        })
     }
 
     function SingIn() {
@@ -161,22 +192,16 @@
             (r) => {
                 console.log(r.responseData)
                 if(r.responseData.statusCode === 200){
+                    // декодируем токен узнаем даты
+
+                    let token = JSON.parse (atob(r.base64))
+                    console.log("Token expires "+ token.exp)
                     window.localStorage.setItem("webToken", r.base64 );
                     ShowMessage(true, "Вход выполнен успешно")
                 }else{
                     ShowMessage(false, "Неправильный логин или пароль")
                 }
-                // if (r.responseData.statusCode === 200) {
-                //     ShowMessage(true, "Вход успешен")
-                //     // r.webToken.
-                //     showToken.innerHTML += "<li style='color: yellow'>" + "ID: <span style='color: red'>" + r.webToken.id +  "</span></li>"
-                //     showToken.innerHTML += "<li style='color: black'>" + "Sub: <span style='color: red'>" + r.webToken.sub + "</span></li>"
-                //     showToken.innerHTML += "<li style='color: green'>" + "iat: <span style='color: red'>" + r.webToken.iat + "</span></li>"
-                //     showToken.innerHTML += "<li  style='color: violet'>" + "Exp:<span style='color:red'>" + r.webToken.exp +"</span></li>"
-                //     showToken.innerHTML += "<li  style='color: violet'>" + "Exp:<span style='color:red'>" + r.base64 +"</span></li>"
-                // } else {
-                //     ShowMessage(false, "Неправильный логин или пароль")
-                // }
+
             }
         )
     }

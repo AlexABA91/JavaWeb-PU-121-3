@@ -29,6 +29,9 @@
                     <span class="material-icons">login</span>
                 </a>
             </li>
+            <li id="avatar-user">
+
+            </li>
         </ul>
     </div>
 </nav>

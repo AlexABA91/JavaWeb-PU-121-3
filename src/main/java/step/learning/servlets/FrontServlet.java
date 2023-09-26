@@ -1,5 +1,6 @@
 package step.learning.servlets;
 
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import step.learning.db.dao.WebTokenDao;
@@ -26,7 +27,7 @@ public class FrontServlet extends HttpServlet {
         String authHeader = req.getHeader("Authorization");
         if(authHeader == null){
             // гостевой режим
-            resp.getWriter().print("Guest mode");
+            resp.getWriter().print("\"Guest mode\"");
             return;
         }
         String pattern = "Bearer (.+)$";
@@ -41,17 +42,19 @@ public class FrontServlet extends HttpServlet {
             try {
                 webToken= new WebToken(token);
             } catch (ParseException ignored ) {
-                resp.getWriter().print("Unpassable token " + token);
+                resp.getWriter().print("\"Unpassable token " + token+"\"");
                 return;
             }
             // проверяем путем поиска пользователя
             User user = webTokenDao.getSubject(webToken);
 
             if(user == null) {
-                resp.getWriter().print("Invalid token " + token);
+                resp.getWriter().print("\"Invalid token " + token+"\"");
                 return;
             }
-            resp.getWriter().print("Auth mode "+ user.getFirstName());
+            resp.getWriter().print(  //"Auth mode "+ user.getFirstName()
+                    new Gson().toJson(user)
+                     );
             return;
         }
         resp.getWriter().print("invalid authorization schema");
