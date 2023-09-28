@@ -102,7 +102,7 @@ public class SignupServlet extends HttpServlet {
         try {
             formData = new SignupFormData(uploadDir,req);
             User user = formData.toUserDto();
-            //  userDao.addUser(user);
+              userDao.addUser(user);
             // TODO: send confirm codes
             responseData = new ResponseData(200, "OK");
         } catch (Exception ex) {

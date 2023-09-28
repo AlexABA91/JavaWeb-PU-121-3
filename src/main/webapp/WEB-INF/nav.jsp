@@ -24,6 +24,9 @@
             <li<%if (("url.jsp").equals(request.getParameter("pageName"))) {%> class="active"<%}%>>
                 <a href="<%=contextPath%>/hash">Hash Form</a>
             </li>
+            <li<%if (("url.jsp").equals(request.getParameter("pageName"))) {%> class="active"<%}%>>
+                <a href="<%=contextPath%>/email">Email</a>
+            </li>
             <li>
                 <a class="waves-effect waves-light btn modal-trigger #cddc39 lime " title="Вход" href="#auth-modal">
                     <span class="material-icons">login</span>

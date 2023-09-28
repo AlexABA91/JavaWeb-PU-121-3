@@ -7,12 +7,18 @@ import step.learning.services.db.DbProvider;
 import step.learning.services.kdf.KdfService;
 
 import javax.inject.Named;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.sql.Statement;
 import java.util.Date;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,7 +108,30 @@ public class UserDao {
           prep.setString(14, user.getGender());
           prep.setString(15, user.getRoleId()!= null? user.getRoleId().toString():null);
           prep.setTimestamp(16, new java.sql.Timestamp(user.getRegisterDT().getTime()));
-         prep.execute();
+          prep.executeUpdate();
+
+          Properties emailProperties = new Properties();
+          emailProperties.put("mail.smtp.auth","true");
+          emailProperties.put("mail.smtp.starttls.enable","true");
+          emailProperties.put("mail.smtp.port","587");
+          emailProperties.put("mail.smtp.ssl.protocols","TLSv1.2");
+          emailProperties.put("mail.smtp.ssl.trust","smtp.gmail.com");
+
+          javax.mail.Session mailSession = Session.getInstance(emailProperties);
+          mailSession.setDebug(true); // выводить в консоль процесс отправки почты
+
+          try(Transport emailTransport = mailSession.getTransport("smtp")) {
+              emailTransport.connect("smtp.gmail.com","alex1991020480@gmail.com","zzemwvgtouowjjud");
+              // настраиваем сообщение
+              javax.mail.internet.MimeMessage message = new MimeMessage( mailSession);
+              message.setFrom(new InternetAddress( "alex1991020480@gmail.com"));
+              message.setSubject("Код подтверждения регистрации JavaWeb");
+              message.setContent("<p><b>код регистрации --- "+user.getEmailConfirmCode()+" --- </b> с регистрацией! <a href='http://localhost:8080/JavaWeb_PU_121_3/'>на Сайте</a></p> ","text/html; charset=UTF-8");
+              emailTransport.sendMessage(message, InternetAddress.parse(user.getEmail()));
+              // отправляем его
+          } catch (MessagingException e) {
+              throw new RuntimeException(e.getMessage());
+          }
       } catch (SQLException e) {
           logger.log(Level.SEVERE,e.getMessage()+"--"+sql);
           throw new RuntimeException(e);

@@ -16,15 +16,15 @@ import java.util.logging.Logger;
 //@WebServlet("/jsp") // замена декларации в web.xml
 public class JspServlet extends HttpServlet {
     private final Logger logger;
-    private final HashService heskService;
+    private final HashService haskService;
     @Inject
     public JspServlet(Logger logger, HashService hashService){
         this.logger = logger;
-        this.heskService = hashService;
+        this.haskService = hashService;
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.log(Level.INFO,"INFO from JspServlet " + heskService.hash("123"));
+        logger.log(Level.INFO,"INFO from JspServlet " + haskService.hash("123"));
         //logger.log(Level.WARNING,"Warning from JspServlet");
         req.setAttribute("pageName","jsp");
         req.getRequestDispatcher("WEB-INF/_layout.jsp").forward(req,resp);
