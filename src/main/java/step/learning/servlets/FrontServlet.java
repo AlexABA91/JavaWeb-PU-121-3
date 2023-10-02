@@ -52,6 +52,7 @@ public class FrontServlet extends HttpServlet {
                 resp.getWriter().print("\"Invalid token " + token+"\"");
                 return;
             }
+
             resp.getWriter().print(  //"Auth mode "+ user.getFirstName()
                     new Gson().toJson(user)
                      );

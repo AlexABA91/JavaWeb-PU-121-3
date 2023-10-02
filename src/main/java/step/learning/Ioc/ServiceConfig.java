@@ -5,6 +5,8 @@ import com.google.inject.Binder;
 import com.google.inject.name.Names;
 import step.learning.services.db.DbProvider;
 import step.learning.services.db.PlanetDbProvider;
+import step.learning.services.email.EmailService;
+import step.learning.services.email.GmailService;
 import step.learning.services.formparse.FormParsService;
 import step.learning.services.formparse.MixedFormParseService;
 import step.learning.services.hesh.HashService;
@@ -20,7 +22,7 @@ public class ServiceConfig extends AbstractModule {
         bind(DbProvider.class).to(PlanetDbProvider.class);
         bind(KdfService.class).to(HashKdfService.class);
         bind(FormParsService.class).to(MixedFormParseService.class);
-
+        bind(EmailService.class).to(GmailService.class);
         bind(String.class)
                     .annotatedWith(Names.named("DbPrefix"))
                 .toInstance("JavaWeb_");

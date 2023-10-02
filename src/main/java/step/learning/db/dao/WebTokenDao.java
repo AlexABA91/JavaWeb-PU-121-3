@@ -8,11 +8,14 @@ import sun.security.util.AuthResources_de;
 
 import javax.inject.Named;
 import java.sql.*;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WebTokenDao {
     private final DbProvider dbProvider;
@@ -25,6 +28,7 @@ public class WebTokenDao {
         this.logger = logger;
         this.dbPrefix = dbPrefix;
     }
+
 
     public WebToken get (User user ){
         if(user == null) return  null;
@@ -89,6 +93,16 @@ public class WebTokenDao {
 
         }
 
+    }
+    public User getSubject( String header ) {
+        Matcher matches = Pattern.compile( "Bearer (.+)$" ).matcher( header ) ;
+        if( matches.find() ) {
+            try {
+                return this.getSubject( new WebToken( matches.group(1) ) ) ;
+            }
+            catch( ParseException ignored ) { }
+        }
+        return null ;
     }
 
     public User getSubject(WebToken token){

@@ -2,26 +2,29 @@ package step.learning.servlets;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import step.learning.services.hesh.HashService;
+import step.learning.services.email.EmailService;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Singleton
 public class MailServlet extends HttpServlet {
+    private final EmailService emailService;
+
+    @Inject
+    public MailServlet(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // метод вызывается до того как происходит разделении по doXXX методам
@@ -32,9 +35,28 @@ public class MailServlet extends HttpServlet {
             case "MAIL":
                 this.doMail(req,resp);
                 break;
+            case "LINK":
+                this.doLink(req,resp);
+                break;
             default:
                 super.service(req, resp);
         }
+    }
+
+    protected void doLink(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try{
+           Message message = emailService.prepareMassage();
+            message.setRecipients( // Получателей также перекладываем в сообщение
+                    Message.RecipientType.TO,
+                    InternetAddress.parse("alex1991020481@gmail.com")
+            );
+            message.setContent("<p><b>Поздравляем</b> с регистрацией! <a href='http://localhost:8080/JavaWeb_PU_121_3/'>на Сайте</a></p> ","text/html; charset=UTF-8" );
+            emailService.Send(message);
+            resp.getWriter().print("Service send");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     protected void doMail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -104,6 +126,10 @@ public class MailServlet extends HttpServlet {
             String resourceName ="javaWeb.jpg";
             // обращаемся в ресурсы в target/class
             String resPath =  this.getClass().getClassLoader().getResource(resourceName).getPath();
+
+            try {resPath = URLDecoder.decode(resPath,"UTF-8");}
+            catch (Exception ignored){};
+
             MimeBodyPart filePart = new MimeBodyPart();
             filePart.setDataHandler(new DataHandler(new FileDataSource(resPath)));
             filePart.setFileName(resourceName);

@@ -3,11 +3,14 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <h1>Работа с электронной почтой </h1>
 <div class="row">
-    <div class="col-s1">
+    <div class="col s3 ">
         <button class="waves-effect waves-light btn" onclick="textEmailClock()">Отправить Text<i class="material-icons right">send</i></button>
     </div>
-    <div class="col-s1">
+    <div class="col s3">
         <button class="waves-effect waves-light btn" onclick="htmlEmailClock()">Отправить HTML<i class="material-icons right">send</i></button>
+    </div>
+    <div class="col s3">
+        <button class="waves-effect waves-light btn" onclick="serviceEmailClock()">Отправить Service<i class="material-icons right">send</i></button>
     </div>
 </div>
 <div class="row">
@@ -32,7 +35,16 @@
     на примере GMAIL это требует включение двух факторной аутентификации<br/>
     <strong>!!!!! используйте приватную почту !!!!!</strong><br/>
 </p>
-<script>function htmlEmailClock() {
+<script>
+    function serviceEmailClock() {
+        fetch("<%=contextPath%>/email",{
+            method: "LINK"
+        }).then(r=>r.text()).then(t=>{
+            document.getElementById("email-res").innerText = t;
+        })
+}
+
+function htmlEmailClock() {
     fetch("<%=contextPath%>/email",{
         method: "PATCH"
     }).then(r=>r.text()).then(t=>{

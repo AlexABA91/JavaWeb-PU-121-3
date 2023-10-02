@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<% String contextPath = request.getContextPath(); // база сайта - домашнее ссылка %>
+<%
+    String contextPath = request.getContextPath(); // база сайта - домашнее ссылка
+%>
 
 <nav>
-
     <div class="nav-wrapper light-green darken-2 ">
-
         <a href="<%=contextPath%>" class="brand-logo logo offset-s1">
             JavaWeb
         </a>
@@ -27,11 +27,18 @@
             <li<%if (("url.jsp").equals(request.getParameter("pageName"))) {%> class="active"<%}%>>
                 <a href="<%=contextPath%>/email">Email</a>
             </li>
-            <li>
-                <a class="waves-effect waves-light btn modal-trigger #cddc39 lime " title="Вход" href="#auth-modal">
-                    <span class="material-icons">login</span>
-                </a>
+            <li id="action-btn">
             </li>
+            <%--            <li  id="enter-btn">--%>
+            <%--                <a class="waves-effect waves-light btn modal-trigger #cddc39 lime"  title="Вход" href="#auth-modal">--%>
+            <%--                    <span class="material-icons">login</span>--%>
+            <%--                </a>--%>
+            <%--            </li>--%>
+            <%--            <li>
+            <%--                <a class="waves-effect waves-light btn modal-trigger #cddc39 red"   title="Выход" id="exit-btn">--%>
+            <%--                   <span class="material-icons">logout</span>--%>
+            <%--                </a>--%>
+            <%--            </li>--%>
             <li id="avatar-user">
 
             </li>

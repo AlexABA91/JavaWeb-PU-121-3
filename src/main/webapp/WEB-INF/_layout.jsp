@@ -18,57 +18,63 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
           media="screen,projection"/>
 
+
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="<%= contextPath %>/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../<%=contextPath%>/css/style.css">
 </head>
 <body>
 
-
-<jsp:include page="nav.jsp">
-    <jsp:param name="pageName" value="<%= pageName %>"/>
-</jsp:include>
-<img src="img/javaWeb.jpg" alt="javaWeb" class="floating left">
-<div class="container">
-    <jsp:include page="<%= pageName  %>"/>
-</div>
-<!-- Modal Trigger -->
-
-<!-- Modal Structure -->
-<div id="auth-modal" class="modal">
-    <div class="modal-content">
-        <h4>Аутентификация</h4>
-        <div class="row">
-            <div class="col s12">
-                <div class="row">
-                    <div class="input-field col s10">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="aut-login" type="text" name="login" class="validate">
-                        <label for="aut-login">Логин</label>
-                    </div>
-                    <div class="input-field col s10">
-                        <i class="material-icons prefix">mode_edit</i>
-                        <input id="aut-password" type="password" name="password" class="validate">
-                        <label for="aut-password">Пароль</label>
+<header>
+    <jsp:include page="nav.jsp">
+        <jsp:param name="pageName" value="<%= pageName %>"/>
+    </jsp:include>
+</header>
+<main>
+    <img src="img/javaWeb.jpg" alt="javaWeb" class="floating left">
+    <div class="container">
+        <jsp:include page="<%= pageName  %>"/>
+        <div id="confirm-email"></div>
+    </div>
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <h4>Аутентификация</h4>
+            <div class="row">
+                <div class="col s12">
+                    <div class="row">
+                        <div class="input-field col s10">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input id="aut-login" type="text" name="login" class="validate">
+                            <label for="aut-login">Логин</label>
+                        </div>
+                        <div class="input-field col s10">
+                            <i class="material-icons prefix">mode_edit</i>
+                            <input id="aut-password" type="password" name="password" class="validate">
+                            <label for="aut-password">Пароль</label>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div  class="modal-footer row">
-        <div class="col s6">
-            <span id="message"></span>
-            <ul id="WebToken"></ul>
+        <div class="modal-footer row">
+            <div class="col s6">
+                <span id="message"></span>
+                <ul id="WebToken"></ul>
+            </div>
+            <div class="col s6">
+                <a href="<%=contextPath%>/signup" class="modal-close waves-effect #4dd0e1 cyan lighten-2 btn-flat">Регистрация</a>
+                <a href="#!" class="modal-close waves-effect #ff7043 deep-orange lighten-1 btn-flat">Забыл пароль</a>
+                <button class="waves-effect #aeea00 lime accent-4 btn-flat" id="signIn">Вход</button>
+            </div>
         </div>
-        <div class="col s6">
-            <a href="<%=contextPath%>/signup" class="modal-close waves-effect #4dd0e1 cyan lighten-2 btn-flat">Регистрация</a>
-            <a href="#!" class="modal-close waves-effect #ff7043 deep-orange lighten-1 btn-flat">Забыл пароль</a>
-            <button class="waves-effect #aeea00 lime accent-4 btn-flat" id="signIn">Вход</button>
-        </div>
+
     </div>
-</div>
+    <!-- Modal Trigger -->
+
+    <!-- Modal Structure -->
+</main>
 <jsp:include page="footer.jsp"/>
 <script>
     const loginInput = document.getElementById('aut-login')
@@ -78,93 +84,145 @@
     const showToken = document.getElementById("WebToken")
     if (!showToken) throw "input id='showToken' not find";
 
+
     document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {
             opacity: 0.5,
-            onCloseStart : function (){
+            onCloseStart: function () {
                 loginInput.value = "";
-                passwordInput.value ="";
-                showToken.value="";
+                passwordInput.value = "";
+                showToken.value = "";
             }
         });
-        window.addEventListener("hashchange",frontRouter)
+        window.addEventListener("hashchange", frontRouter)
         frontRouter()
+        setBtn()
     });
-    function frontRouter(){
+
+    function frontRouter() {
         console.log(location.hash)
         switch (location.hash) {
             case '#front':
-                    loadFrontPage()
+                loadFrontPage()
                 break;
             default:
         }
     }
 
+    function setBtn() {
+        const btn = document.getElementById("action-btn")
+        if (!btn) throw "input id='action-btn' not find";
+
+        if (btn) {
+            const token = localStorage.getItem("webToken")
+            if (!token) {
+                btn.innerHTML = "<li>" +
+                    "<a class='waves-effect waves-light btn modal-trigger #cddc39 lime'" +
+                    "  title='Вход' href='#auth-modal'>" +
+                    " <span class='material-icons'>login</span></a></li>";
+            } else {
+                btn.innerHTML = "<li>" +
+                    "<a class='waves-effect waves-light btn modal-trigger #cddc39 red'" +
+                    "   title='Выход' id='exit-btn'>" +
+                    "<span class='material-icons'>logout</span></a></li>";
+
+                document.getElementById("exit-btn").addEventListener("click", Exit)
+            }
+            console.log("btn found")
+        }
+    }
+
     document.getElementById("signIn").addEventListener("click", SingIn)
 
-    function loadFrontPage(){
+
+    function loadFrontPage() {
         const token = window.localStorage.getItem("webToken")
         //Проверяем есть ли токен в localStorage
 
-        const headers = (token == null )?{}:{ 'Authorization':`Bearer ${token}`}
-        if(! token){  // не авторизованный режим
+        const headers = (token == null) ? {} : {'Authorization': `Bearer ${token}`}
+        if (!token) {  // не авторизованный режим
             alert('Данная страница требует авторизации')
             window.location.href = "<%= contextPath%>"
             return;
         }
         // Пытаемся декодировать токен и пытаемся вычислить термин пригодности
-        try{
+        try {
             var data = JSON.parse(atob(token))
 
-        }catch (ex){
+        } catch (ex) {
             alert('Токен не корректный повторите авторизацию')
             window.location.href = "<%= contextPath%>"
             return;
         }
-        console.log( Date.parse(data.exp))
+        console.log(Date.parse(data.exp))
         console.log(Date.now())
-        if(Date.parse(data.exp) < Date.now() ){
+        if (Date.parse(data.exp) < Date.now()) {
             alert("Токен просроченный повторите авторизацию")
             window.localStorage.removeItem("webToken")
         }
+        const userAvatar = document.getElementById("avatar-user")
+        if (!userAvatar) throw "avatar-user mot found"
 
-
-        fetch("<%= contextPath %>/front",{
-            method:"GET",
+        fetch("<%= contextPath %>/front", {
+            method: "GET",
             headers: headers
-        }).then(j=>j.json()).then(j=>{
-          if(typeof j.login != "undefined"){
-              const userAvatar = document.getElementById("avatar-user")
-              if(!userAvatar) throw  "avatar-user mot found"
-              userAvatar.innerHTML = `<img style="max-height:60px" src="<%= contextPath%>/upload/${j.avatar}" />`
-          }
+        }).then(j => j.json()).then(j => {
+            if (typeof j.login != "undefined") {
+
+                userAvatar.innerHTML = `<img style="max-height:60px" src="<%= contextPath%>/upload/${j.avatar}" />`
+
+                if (typeof j.emailConfirmCode == "string" &&
+                    j.emailConfirmCode.length > 0) {
+                    const confirmDiv = document.getElementById("confirm-email")
+                    if (!confirmDiv) throw "confirm-code not found"
+                    confirmDiv.innerHTML = `Почта не подтверждена. Введите код с е-листа
+                 <div class="input-field inline"><input id='email-code'/></div>
+                <button onclick='confirmCodeClick()'>Подтвердить</button>`;
+                    confirmDiv.style.border = "1px solid maroon";
+                    confirmDiv.style.padding = "5px 10px";
+                    ;
+                }
+            }
             console.log(j)
         })
     }
 
-    function SingIn() {
+    function confirmCodeClick() {
 
+        const emailCodeInput = document.getElementById("email-code")
+        if (!emailCodeInput) throw "email-code mot found"
+        fetch("<%= contextPath %>/signup?code=" + emailCodeInput.value, {
+            method: "PATCH",
+            headers: {'Authorization': "Bearer " + window.localStorage.getItem("webToken")}
+        }).then(r => {
+            if (r.status === 202) {
+                alert("Почта подтверждена")
+                window.location.reload()
+            } else {
+                r.text().then(alert)
+            }
+        })
+
+    }
+
+    function Exit() {
+        localStorage.removeItem("webToken")
+        window.location.replace("<%=contextPath%>")
+    }
+
+    function SingIn() {
         const message = document.getElementById('message')
         if (!message) throw "input id='message' not find";
         const instance = M.Modal.getInstance(document.getElementById("auth-modal"));
 
-        function ShowMessage(isSuccess, messageText) {
-            if (!isSuccess) {
-                message.classList.add("red-text", "text-darken-2")
+        function ShowMessage(messageText) {
 
-            } else {
-                message.classList.add("green-text", "text-darken-2")
-            }
+            message.classList.add("green-text", "text-darken-2")
             message.innerText = messageText
             setTimeout(function () {
-                if (!isSuccess) {
-                    message.classList.remove("red-text", "text-darken-2")
-
-                } else {
-                    message.classList.remove("green-text", "text-darken-2")
-                    instance.close();
-                }
+                message.classList.remove("green-text", "text-darken-2")
+                instance.close();
                 message.innerText = ""
             }, 3000)
         }
@@ -180,32 +238,28 @@
         const formData = new FormData()
         formData.append("aut-login", loginInput.value)
         formData.append("aut-password", passwordInput.value)
-        // const  data = {
-        //       login:loginInput.value,
-        //       password: passwordInput.value
-        //  }
+
         fetch("<%= contextPath %>/signup", {
             method: "PUT",
             body: formData
-            // JSON.stringify(data)
         }).then(r => r.json()).then(
             (r) => {
                 console.log(r.responseData)
-                if(r.responseData.statusCode === 200){
+                if (r.responseData.statusCode === 200) {
                     // декодируем токен узнаем даты
 
-                    let token = JSON.parse (atob(r.base64))
-                    console.log("Token expires "+ token.exp)
-                    window.localStorage.setItem("webToken", r.base64 );
-                    ShowMessage(true, "Вход выполнен успешно")
-                }else{
+                    let token = JSON.parse(atob(r.base64))
+                    console.log("Token expires " + token.exp)
+                    window.localStorage.setItem("webToken", r.base64);
+                    window.location.reload();
+                } else {
                     ShowMessage(false, "Неправильный логин или пароль")
                 }
 
             }
         )
     }
-    </script>
+</script>
 </body>
 
 </html>

@@ -9,11 +9,14 @@ import step.learning.db.dao.UserDao;
 import step.learning.db.dao.WebTokenDao;
 import step.learning.db.dto.User;
 import step.learning.db.dto.WebToken;
+import step.learning.services.email.EmailService;
 import step.learning.services.formparse.FormParsResult;
 import step.learning.services.formparse.FormParsService;
 import step.learning.services.kdf.KdfService;
 
 import javax.inject.Named;
+import javax.mail.Message;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +32,7 @@ import java.util.logging.Logger;
 
 @Singleton
 public class SignupServlet extends HttpServlet {
+    private final EmailService emailService;
     private final FormParsService formParsService;
     private final KdfService kdfService;
     private final String uploadPath;
@@ -36,9 +40,10 @@ public class SignupServlet extends HttpServlet {
     private  final Logger logger;
     private final WebTokenDao webTokenDao;
     @Inject
-    public SignupServlet(@Named ("UploadDir") String uploadPath, KdfService kdfService,
+    public SignupServlet(EmailService emailService, @Named ("UploadDir") String uploadPath, KdfService kdfService,
                          FormParsService formParsService, UserDao userDao, Logger logger,
                          WebTokenDao webTokenDao) {
+        this.emailService = emailService;
         this.formParsService = formParsService;
         this.uploadPath = uploadPath;
         this.kdfService = kdfService;
@@ -47,6 +52,45 @@ public class SignupServlet extends HttpServlet {
         this.webTokenDao = webTokenDao;
     }
 
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        switch( req.getMethod().toUpperCase() ) {
+            case "PATCH" :
+                this.doPatch( req, resp ) ;
+                break ;
+            default :
+                super.service( req, resp ) ;
+        }
+    }
+    //Подтверждение кода email
+    protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String code = req.getParameter("code");
+        if(code == null){
+            resp.setStatus(400);
+            resp.getWriter().print("Missing required parameter: code");
+        }
+        String authHeader = req.getHeader("Authorization");
+        if(authHeader == null){
+            resp.setStatus(401);
+            resp.getWriter().print("Unauthorized: Authorization header required");
+            return;
+        }
+
+        User user = webTokenDao.getSubject(authHeader);
+        if(user == null){
+            resp.getWriter().print("Forbidden: invalid or expired token");
+            resp.setStatus(403);
+            return;
+        }
+        //проверяем совпадение кода в бд и кода в запросе
+        if(userDao.confirmEmailCoder(user,code)){
+            resp.setStatus(202);
+            resp.getWriter().print("Code: accepted");
+        }else {
+            resp.setStatus(203);
+            resp.getWriter().print("Code: rejected");
+        }
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("pageName", "signup");
@@ -57,6 +101,7 @@ public class SignupServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseData responseData;
         WebToken webToken = null;
+        User user = null;
          try {
              FormParsResult parsResult = formParsService.pars(req);
              String login = parsResult.getFields().get("aut-login");
@@ -65,7 +110,7 @@ public class SignupServlet extends HttpServlet {
 //            JsonObject json = JsonParser.parseReader(req.getReader()).getAsJsonObject();
 //            String login = json.get("aut-login").getAsString();
 //             String password = json.get("aut-password").getAsString();
-                User user = userDao.aunthenticate(login,password);
+                user = userDao.aunthenticate(login,password);
                if(user!= null) {
                    userDao.SetLastLoginTime(user);
                    //Генерируем WbToken
@@ -86,7 +131,7 @@ public class SignupServlet extends HttpServlet {
          }
         Gson gen = new GsonBuilder().setPrettyPrinting().create();
 
-        ResponseDataAll rep = new ResponseDataAll(responseData,webToken,webToken.toBase64());
+        ResponseDataAll rep = new ResponseDataAll(responseData,webToken,webToken.toBase64(),user);
         resp.getWriter().print(
                 gen.toJson(rep)
         );
@@ -103,6 +148,17 @@ public class SignupServlet extends HttpServlet {
             formData = new SignupFormData(uploadDir,req);
             User user = formData.toUserDto();
               userDao.addUser(user);
+
+              Message message = emailService.prepareMassage();
+            message.setRecipients( // Получателей также перекладываем в сообщение
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(user.getEmail())
+            );
+            message.setContent("<p><b>код регистрации --- "+user.getEmailConfirmCode()+" --- </b> на сайте<a href='http://localhost:8080/JavaWeb_PU_121_3/'>на Сайте</a></p> "
+                    ,"text/html; charset=UTF-8");
+
+            emailService.Send(message);
+
             // TODO: send confirm codes
             responseData = new ResponseData(200, "OK");
         } catch (Exception ex) {
@@ -149,10 +205,20 @@ public class SignupServlet extends HttpServlet {
             this.webToken = webToken;
         }
 
-        public ResponseDataAll(ResponseData responseData, WebToken webToken,String base64 ) {
-            this.base64 = base64;
-            this.responseData = responseData;
-            this.webToken = webToken;
+        public User getUser() {
+            return user;
+        }
+
+        public void setUser(User user) {
+            this.user = user;
+        }
+
+        public User user;
+        public ResponseDataAll(ResponseData responseData, WebToken webToken,String base64,User user ) {
+            setBase64( base64);
+           setResponseData( responseData);
+           setWebToken(webToken);
+           setUser(user);
         }
     }
     static class ResponseData{
